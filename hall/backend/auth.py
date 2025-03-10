@@ -75,7 +75,7 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     if not user or not verify_password(login_data.password, user.password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     access_token = create_access_token(data={"sub": str(user.id)})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"success":True,"access_token": access_token, "token_type": "bearer"}
 
 
 @router.get("/me")

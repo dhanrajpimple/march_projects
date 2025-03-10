@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "@remix-run/react";
 import { Lock } from 'lucide-react';
+import axios from 'axios';
 
 const AdminLoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -17,16 +18,14 @@ const AdminLoginPage: React.FC = () => {
     
     // Simulate authentication
     try {
-      // In a real app, you would call your authentication API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+         
+       const response = await axios.post("http://localhost:8000/auth/login", {email: email, password: password});
       
-      // For demo purposes, hardcoded credentials
-      if (email === 'admin@example.com' && password === 'password') {
-        // Set authentication state/token in a real app
+       if(response.data.success){
+        localStorage.setItem('token', response.data.token);
         navigate('/admin/dashboard');
-      } else {
-        setError('Invalid email or password');
-      }
+       }
+      
     } catch (err) {
       setError('An error occurred during login. Please try again.');
     } finally {
